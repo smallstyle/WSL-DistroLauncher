@@ -33,6 +33,16 @@ systemd-nspawn -q -D $TMPDIR/dist << EOF
 yum update -y
 yum install -y sudo
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wsl-users
+cat <<EOL >> /etc/wsl.conf
+[automount]
+enabled = true
+options = "metadata,uid=1000,gid=1000,umask=22,fmask=11,case=off"
+mountFsTab = true
+
+[network]
+generateHosts = true
+generateResolvConf = true
+EOL
 yum autoremove -y
 yum clean all -y
 EOF
